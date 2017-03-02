@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flip card</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<!-- <base href="file:///Users/Andreas/Företaget/GRAFIK/WEB" target="_blank"> -->
+	<style type="text/css">
+		div {
+			display: inline-block;
+			width: 100%;
+		}
+		body {
+			background-color: #F3F3F3;
+			margin: 0;
+			text-align: center;
+		}
+		hr {
+			width: 100%;
+		}
+		#content {
+			margin: 0 40px;
+    		max-width: 1200px;
+    		text-align: left;
+		}
+		#cards {
+			margin: 10px 10px;
+		}
+		#logo_banner {
+			width: 100%;
+			text-align: center;
+			margin: 0 auto;
+			overflow: hidden;
+			max-height: 310px;
+
+		}
+		#logo_banner img {
+			width: 100%;
+			max-width: 1000px;
+			margin-top: -100px;
+		}
+		section {
+			height: 500px;
+			display: block;
+		}
+		article.card {
+			position: absolute;
+			height: 350px;
+			width: 224px;
+			margin: 0px;
+		    transform: rotateY(0deg); 
+		    z-index: 0;
+		    transform-origin: center; 	
+		}
+		article.card  div.paper {
+			background: white; 
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+			width: 204px;
+			padding: 10px;
+			transition: 0.6s box-shadow;
+		}
+		article.card.active {
+			z-index: 2;
+		}
+		.thumbnail img {
+		    max-width: 204px;
+		}
+		div#overlay {
+			height: 9999px;
+			width: 9999px;
+			top: -1000px;
+			left: -1000px;
+			opacity: 0;
+			position: absolute;
+			background: black;
+			z-index: 0;
+			transition: 0.4s opacity;
+		}
+		h1 {
+			font-family: 'Ubuntu';
+			font-weight: bold;
+			font-size: 18px;
+			-webkit-margin-before: 0px;
+    		-webkit-margin-after: 0px;
+    		margin-left: 0;
+
+		}
+		h2 {
+			font-family: 'Big John','Ubuntu';
+			font-weight: bold;
+			font-size: 13px;
+			margin: 20px 0 15px 0; 
+		}
+		p {
+			font-family: 'Ubuntu';
+			font-size: 12px;
+		}
+		header * {
+			display: inline-block;
+			text-align: left;
+			vertical-align: middle;
+		}
+		header {
+			background: white;
+			position: fixed;
+			margin:	0;
+			width: 100%;
+			/*padding: 5px 50px; */
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+			z-index: 99;
+			overflow: hidden;
+		}
+		#contact_info a {
+			color: #95989A;
+		}
+		a.menu {
+			margin-right: 10px;
+			color: black;
+			text-decoration: none;
+		}
+		a.menu:hover {
+			color: #6ECD8D;
+		}
+		article.card.active .thumbnail {
+			display: none;
+		}
+	</style>
+
+</head>
+<body onscroll="scrolling()">
+<div style="overflow: hidden; width: 100%;">
+	<header>
+		<div id="menubar" style="text-align: left; max-width: 1200px;">
+			<div style="width: 200px;float: right;"><a href="#logo_banner" ><img src="file:///Users/Andreas/Företaget/GRAFIK/WEB/img/Cogitari-logo-aqua-02@2x.png"></a></div>
+		</div>
+	</header>
+	<div id="content" style="perspective: 2000px; perspective-origin: 0px 400px;">
+		<div id="contact_info" style="position:absolute; z-index: 5; top: 50px;  color: #7a7a7a;">
+			<p><i>
+				Cogitari Media <br>
+				Dragarbrunnsg. 54 <br>
+				75320 Uppsala <br>
+				<a href="mailto:info@cogitari.se" target="_top">info@cogitari.se</a><br>
+				<a href="tel://0046-708236172">+46 70 823 61 72</a>
+			</i></p>
+		</div>
+		<div id="logo_banner"><img src="file:///Users/Andreas/Företaget/Logo/Cogitari-logo%20Brushes.png"></div>
+		<hr>
+		<div id="sections" style="position: relative;"></div>
+	</div>
+</div>
+<script type="text/javascript">
+
+var base = 'file:///Users/Andreas/Företaget/GRAFIK/WEB';
+
+var items = {
+	sections: [
+		{	
+			title: 'Video', 
+			id: 'video_section',
+			href: '#video_section',
+			type: 'section',
+			color: '#70CD8F',
+			articles: [{
+				index: 0,
+				type: 'video',
+				title: 'trailers',
+				thumbnail: '/img/V_Trailers@2x.png',
+				sniplet: '',
+				description: 'Trailer för Pannkakskyrkan ’GO!’, 2016\n"Vi gillade Andreas breda kompetens!"',
+				read_more: 'Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra...'
+			},{
+				index: 1,
+				type: 'video',
+				title: 'grafik',
+				thumbnail: '/img/V_Grafik@2x.png',
+				sniplet: '',
+				description: '',
+				read_more: 'Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra...'
+			},{
+				index: 2,
+				type: 'video',
+				title: 'bröllop',
+				thumbnail: '/img/V_Bröllop@2x.png',
+				sniplet: '',
+				description: ''
+			},{
+				index: 3,
+				type: 'video',
+				title: 'dokumentär',
+				thumbnail: '/img/V_Dokumentär@2x.png',
+				sniplet: '',
+				description: ''
+			},{
+				index: 4,
+				type: 'video',
+				title: 'textning',
+				thumbnail: '/img/V_Textning@2x.png',
+				sniplet: '',
+				description: ''
+			}]
+		}, {
+			title: 'Web',
+			id: 'web_section',
+			href: '#web_section',
+			type: 'section',
+			color: '#70CD8F',
+			articles: [{
+				type: 'video',
+				title: 'trailers',
+				thumbnail: '',
+				sniplet: '',
+				description: ''
+			}]
+		}, {
+			title: 'Foto',
+			id: 'foto_section',
+			href: '#foto_section',
+			type: 'section',
+			color: '#70CD8F',
+			articles: [{
+				type: 'video',
+				title: 'trailers',
+				thumbnail: '',
+				sniplet: '',
+				description: ''
+			}]
+		}, {
+			title: 'Musik',
+			id: 'musik_section',
+			href: '#musik_section',
+			type: 'section',
+			color: '#70CD8F',
+			articles: [{
+				type: 'video',
+				title: 'trailers',
+				thumbnail: '',
+				sniplet: '',
+				description: ''
+			}]
+		}, {
+			title: 'Kurser',
+			id: 'kurser_section',
+			href: '#kurser_section',
+			type: 'section',
+			color: '#70CD8F',
+			articles: [{
+				type: 'video',
+				title: 'trailers',
+				thumbnail: '',
+				sniplet: '',
+				description: ''
+			}]
+		}
+	],
+	about: {
+		title: 'Om mig',
+		id: 'about_section',
+		href: '#about_section',
+		type: 'about',
+		color: '#70CD8F'
+	},
+	contact: {
+		title: 'Kontakt',
+		id: 'contact_section',
+		href: '#contact_section',
+		type: 'contact'
+	}
+};
+
+var screen_width = screen.availWidth;
+var screen_height = screen.availHeight;
+var site_width = document.body.clientWidth;
+var site_height = document.body.clientHeight;
+var scrolling = function(){
+	var window_mid = window.scrollY+screen.availHeight/2;
+	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
+}
+
+d3.select('#menubar')
+	.selectAll('a.menu')
+	.data(items.sections.concat([items.about, items.contact]))
+	.enter().append('a')
+		.attr('href', function(d){ return d.href })
+		.attr('class', 'menu')
+		.append('h2')
+		.html(function(d,i){ return d.title });
+
+
+
+// var card_width = 244;
+var card_width = 259;
+var open_card_x = 50;
+var flip_time = 600;
+var selection = undefined;
+
+
+
+
+var overlay = d3.select("div#sections")
+	.append('div')
+	.attr('id', 'overlay');
+
+var sections = d3.select("div#sections")
+	.selectAll("section")
+	.data(items.sections)
+	.enter().append("section")
+	.attr('id', function(section){ return section.id; });
+
+	//Cards
+sections.each(function(section){
+		
+		d3.select(this).selectAll('article.card')
+			.data(section.articles)
+			.enter().append('article')
+			.attr('class', 'card')
+			
+			.html(function(article) { return '<div class="articles" style="position:absolute"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px; margin-top: 10px;"><div class="thumbnail"><img src="'+base+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div>'})
+			.style('transform', 'translateZ(-100px)')
+			.style('left', function(article,i) {
+				return i*card_width+'px';
+			})
+			.on('click', function(){
+				var self = this;
+				self.active = !self.active;
+				// self.opening = !self.isOpen;
+				console.log(self);
+
+				
+				//Shadows
+				d3.select(self).selectAll('div.paper')
+					.transition().duration(flip_time)
+					.on('start', function(){
+						self.opening = !self.isOpen;
+						self.closing = self.isOpen;
+						if( self.opening ){
+							overlay.style('z-index', 1).style('opacity', 0.5);
+							d3.select(self).attr('class', 'card active');
+						}else{
+							overlay.style('opacity', 0);
+						}	
+					})
+					// .html('<div class="thumbnail"></div><hr>')
+					.styleTween("background", function() {
+					    var i = d3.interpolate('#ffffff','#949494');
+					    return function(t) {
+					        return i((1-Math.cos(t*2*Math.PI))/2); 
+					    };
+					})
+					.styleTween("box-shadow", function() { 
+						return function(){ return self.opening ? "10px 23px 50px -10px rgba(0, 0, 0, 0.26)" : "0 3px 6px rgba(0, 0, 0, 0.16)"; } 
+					});
+				//Img
+				d3.select(self).selectAll('div.paper').selectAll('img')
+					.transition().duration(flip_time)
+					.styleTween("-webkit-filter", function(){
+						var br = d3.interpolate('brightness(100%)', 'brightness(5%)');
+						return function(t) {
+					        return br((1-Math.cos(t*2*Math.PI))/2); 
+					    };
+					});
+				//Content
+				d3.select(self).selectAll('div.paper').selectAll('div.thumbnail')
+					.transition().duration(flip_time)
+					.styleTween("display", function(){
+						return function(t) {
+					        return t>0.5&&self.opening || (1-t)>0.5&&self.closing ? 'none': 'block';
+					    };
+					});
+				d3.select(self).selectAll('div.paper').selectAll('div.content')
+					.transition().duration(flip_time)
+					.styleTween("display", function(){
+						return function(t) {
+					        return t>0.5&&self.opening || (1-t)>0.5&&self.closing ? 'block': 'none';
+					    };
+					});
+
+				// Transform
+				d3.select(self)
+					.attr('class', 'card active')
+					.transition().duration(flip_time)
+					.styleTween("transform", function() {
+						var tf_ry = d3.interpolate(0, 180);
+						var tf_tz = d3.interpolate(-100, 100);
+						// var tf_sc = d3.interpolate(1, 1.2);
+					    return function(t) {
+					    	var rt = t>0.5 ? t-1 : t;
+					    	// var xt = t<0.5? 0 : t*2-1;
+					    	// var xxt = t<0.5? t*2 : 1;
+					        return self.opening ? 
+					        	"rotateY(" + tf_ry(rt) + "deg) translateZ("+tf_tz(t)+"px)" : //open
+					        	"rotateY(" + tf_ry(rt*-1) + "deg) translateZ("+tf_tz(1-t)+"px)" ; //close
+
+					        	// "rotateY(" + tf_ry(rt) + "deg) scale("+tf_sc(t)+")" : //open
+					        	// "rotateY(" + tf_ry(rt*-1) + "deg) scale("+tf_sc(1-t)+")" ; //close
+					    };
+					})
+					.styleTween("left", function(d,i) {
+						var tx = d3.interpolate(d.index*card_width, open_card_x);
+					    return function(t) {
+					        return self.opening ? 
+					        	tx(t)+"px":
+					        	tx(1-t)+"px";
+					    };
+					})
+					.on('end', function() {
+						self.opening = false;
+						self.closing = false;
+						self.isOpen = !self.isOpen;
+						if(!self.isOpen){
+							d3.select(self).attr('class', 'card');
+							overlay.style('z-index', 0).style('opacity', 0);
+						}
+					});
+			
+			});
+		 var touchstart = {x:0,y:0};
+		 var direction = undefined;
+		d3.select(this).selectAll('article.card')
+			.on('touchstart', function(){
+				touchstart = {
+					x: d3.event.touches[0].clientX,
+					y: d3.event.touches[0].clientY
+				};
+			})
+			.on('touchmove', function(){
+				var moveX = d3.event.touches[0].clientX - touchstart.x;
+				var moveY = d3.event.touches[0].clientY - touchstart.y;
+				if(!direction && moveX*moveX > 25){
+					direction = 'x';
+				}
+				if(!direction && moveY*moveY > 25){
+					direction = 'y';
+				}
+				if(direction == 'x'){
+					d3.event.preventDefault();
+					d3.select('#'+section.id).selectAll('.articles').style('left', moveX+'px');
+					console.log(('#'+section.id));
+				}
+			})
+			.on('touchend', function(){
+				if(direction == 'x'){
+					var moveX = d3.event.changedTouches[0].clientX - touchstart.x;
+					console.log(Math.round(moveX/card_width))
+					if(moveX*moveX> 100*100){
+						var n = Math.round(moveX/card_width)*card_width;
+
+						d3.select('#'+section.id).selectAll('.articles').style('left', function(){return n ? n+'px' : '0px'});
+					}
+					direction = undefined;
+				}
+			});
+	});
+	/*
+	.selectAll('article.card')
+	.enter().append('article')
+	.attr('class', 'card')
+	.html(function(d) {return '<div>'+d.title+'</h1></div><div style="height: 90%; margin-top: 20px;"></div>'})
+	.style('transform', 'translateZ(-100px)')
+	.style('left', function(d) {
+		return d.index*card_width+'px';
+	})
+	.on('click', function(){
+		var self = this;
+		self.active = !self.active;
+		self.opening = !self.isOpen;
+		console.log(self);
+
+		// Class
+		d3.select(self)
+			.attr('class', 'card active')
+		//Transform
+			.transition().duration(flip_time)
+			.styleTween("transform", function() {
+				var tf_ry = d3.interpolate(0, 180);
+				var tf_tz = d3.interpolate(-100, 100);
+			    return function(t) {
+			    	var rt = t>0.5 ? t-1 : t;
+			        return self.opening ? 
+			        	"rotateY(" + tf_ry(rt) + "deg) translateZ("+tf_tz(t)+"px)" : //open
+			        	"rotateY(" + tf_ry(rt*-1) + "deg) translateZ("+tf_tz(1-t)+"px)" ; //close
+			    };
+			})
+			.styleTween("left", function(d) {
+				var tx = d3.interpolate(d.index*card_width, open_card_x);
+			    return function(t) {
+			    	var rt = t>0.5 ? t-1 : t;
+			        return self.opening ? 
+			        	tx(t)+"px":
+			        	tx(1-t)+"px";
+			    };
+			})
+			.on('end', function() {
+				self.opening = false;
+				this.isOpen = !this.isOpen;
+				if(!self.isOpen){
+					d3.select(self).attr('class', 'card');
+					overlay.style('z-index', 0).style('opacity', 0);
+				}
+			})
+		//Shadows
+			.selectAll('div')
+				.styleTween("background", function() {
+				    var i = d3.interpolate('#ffffff','#949494');
+				    return function(t) {
+				        return i((1-Math.cos(t*2*Math.PI))/2); 
+				    };
+				})
+    			.styleTween("box-shadow", function() {
+    				var sh = d3.interpolate("0px 10px 30px 0px rgba(0, 0, 0, 0.16)", "10px 23px 50px -10px rgba(0, 0, 0, 0.26)");
+				    return function(t) { return self.opening ? sh(t) : sh(1-t); };
+				});
+
+
+		if( self.opening ){
+			overlay.style('z-index', 1).style('opacity', 0.5);
+			d3.select(self).attr('class', 'card active');
+		}else{
+			overlay.style('opacity', 0);
+		}
+	
+		// this.isOpen = !this.isOpen;
+	});
+	// console.log(cards);
+*/
+</script>
+</body>
+</html>
