@@ -3,6 +3,7 @@
 <head>
 	<title>Cogitari Media</title>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:900|Ubuntu" rel="stylesheet">
 	<!-- <base href="file:///Users/Andreas/Företaget/GRAFIK/WEB" target="_blank"> -->
 	<style type="text/css">
 		div {
@@ -91,10 +92,11 @@
 
 		}
 		h2 {
-			font-family: 'Big John','Ubuntu';
-			font-weight: bold;
+			font-family: 'Raleway','Big John','Ubuntu';
+			font-weight: 900;
 			font-size: 13px;
 			margin: 20px 0 15px 0; 
+			text-transform: uppercase;
 		}
 		p {
 			font-family: 'Ubuntu';
@@ -329,8 +331,12 @@ sections.each(function(section){
 			.style('left', function(article,i) {
 				return i*card_width+'px';
 			})
+			.on('open', function(){
+				console.log('Open'+this);
+			})
 			.on('click', function(){
 				var self = this;
+				self.open();
 				self.active = !self.active;
 				// self.opening = !self.isOpen;
 				console.log(self);
