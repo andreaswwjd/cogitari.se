@@ -1,0 +1,18 @@
+{
+  "name": "cogitari.se",
+  "version": "1.2.3",
+  "description": "Cogitari Media",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Andreas Lundström",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "ejs": "^2.5.5",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0"
+  }
+}
