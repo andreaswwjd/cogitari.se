@@ -26,11 +26,17 @@
 			margin: 10px 10px;
 		}
 		#logo_banner {
-			width: 100%;
-			text-align: center;
-			margin: 0 auto;
-			overflow: hidden;
-			max-height: 310px;
+			background-image: url(img/Cogitari-logo_Small@2x.png);
+		    width: 100%;
+		    padding: 6% 0;
+		    min-height: 200px;
+		    /* text-align: center; */
+		    margin: 50px auto 0;
+		    overflow: hidden;
+		    max-height: 310px;
+		    background-position: center;
+		    background-size: 70%;
+		    background-repeat: no-repeat;
 
 		}
 		#logo_banner img {
@@ -133,7 +139,7 @@
 			<div style="width: 200px;float: right;"><a href="#logo_banner" ><img src="img/Cogitari-logo-aqua-02@2x.png"></a></div>
 		</div>
 	</header>
-	<div id="content" style="perspective: 2000px; perspective-origin: 0px 400px;">
+	<div id="content" style=" perspective: 2000px; perspective-origin: 0px 400px;">
 		<div id="contact_info" style="position:absolute; z-index: 5; top: 50px;  color: #7a7a7a;">
 			<p><i>
 				Cogitari Media <br>
@@ -143,8 +149,8 @@
 				<a href="tel://0046-708236172">+46 70 823 61 72</a>
 			</i></p>
 		</div>
-		<div id="logo_banner"><img src="img/Cogitari-logo_Small.png"></div>
-		<hr>
+		<div id="logo_banner"><!-- <img src="img/Cogitari-logo_Small.png"> --></div>
+		<hr style="width: 10px;">
 		<div id="sections" style="position: relative;"></div>
 	</div>
 </div>
@@ -269,12 +275,16 @@ var items = {
 
 var screen_width = screen.availWidth;
 var screen_height = screen.availHeight;
+// document.body.style.width = screen_width+'px';
+// document.getElementsByTagName('header')[0].style.width = screen_width+'px';
 var site_width = document.body.clientWidth;
 var site_height = document.body.clientHeight;
 var scrolling = function(){
 	var window_mid = window.scrollY+screen.availHeight/2;
 	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
 }
+
+
 
 d3.select('#menubar')
 	.selectAll('a.menu')
