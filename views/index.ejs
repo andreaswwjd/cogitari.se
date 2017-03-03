@@ -3,135 +3,25 @@
 <head>
 	<title>Cogitari Media</title>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script >
+		//Data
+		var getJSON = function(url, callback) {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('GET', url, true);
+		    xhr.responseType = 'json';
+		    xhr.onload = function() {
+		      var status = xhr.status;
+		      if (status == 200) {
+		        callback(null, xhr.response);
+		      } else {
+		        callback(status);
+		      }
+		    };
+		    xhr.send();
+		};
+	</script>
 	<link href="https://fonts.googleapis.com/css?family=Raleway:900|Ubuntu" rel="stylesheet">
-	<!-- <base href="file:///Users/Andreas/Företaget/GRAFIK/WEB" target="_blank"> -->
-	<style type="text/css">
-		div {
-			display: inline-block;
-			width: 100%;
-		}
-		body {
-			background-color: #F3F3F3;
-			margin: 0;
-			text-align: center;
-		}
-		hr {
-			width: 100%;
-		}
-		#content {
-			margin: 0 40px;
-    		max-width: 1200px;
-    		text-align: left;
-		}
-		#cards {
-			margin: 10px 10px;
-		}
-		#logo_banner {
-			background-image: url(img/Cogitari-logo_Small@2x.png);
-		    width: 100%;
-		    padding: 6% 0;
-		    min-height: 200px;
-		    /* text-align: center; */
-		    margin: 50px auto 0;
-		    overflow: hidden;
-		    max-height: 310px;
-		    background-position: center;
-		    background-size: 70%;
-		    background-repeat: no-repeat;
-
-		}
-		#logo_banner img {
-			width: 100%;
-			max-width: 1000px;
-			margin-top: -100px;
-		}
-		section {
-			height: 500px;
-			display: block;
-		}
-		article.card {
-			position: absolute;
-			height: 350px;
-			width: 224px;
-			margin: 0px;
-		    transform: rotateY(0deg); 
-		    z-index: 0;
-		    transform-origin: center; 	
-		}
-		article.card  div.paper {
-			background: white; 
-			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-			width: 204px;
-			padding: 10px;
-			transition: 0.6s box-shadow;
-		}
-		article.card.active {
-			z-index: 2;
-		}
-		.thumbnail img {
-		    max-width: 204px;
-		}
-		div#overlay {
-			height: 9999px;
-			width: 9999px;
-			top: -1000px;
-			left: -1000px;
-			opacity: 0;
-			position: absolute;
-			background: black;
-			z-index: 0;
-			transition: 0.4s opacity;
-		}
-		h1 {
-			font-family: 'Ubuntu';
-			font-weight: bold;
-			font-size: 18px;
-			-webkit-margin-before: 0px;
-    		-webkit-margin-after: 0px;
-    		margin-left: 0;
-
-		}
-		h2 {
-			font-family: 'Raleway','Big John','Ubuntu';
-			font-weight: 900;
-			font-size: 13px;
-			margin: 20px 0 15px 0; 
-			text-transform: uppercase;
-		}
-		p {
-			font-family: 'Ubuntu';
-			font-size: 12px;
-		}
-		header * {
-			display: inline-block;
-			text-align: left;
-			vertical-align: middle;
-		}
-		header {
-			background: white;
-			position: fixed;
-			margin:	0;
-			width: 100%;
-			/*padding: 5px 50px; */
-			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-			z-index: 99;
-			overflow: hidden;
-		}
-		#contact_info a {
-			color: #95989A;
-		}
-		a.menu {
-			margin-right: 10px;
-			color: black;
-			text-decoration: none;
-		}
-		a.menu:hover {
-			color: #6ECD8D;
-		}
-		article.card.active .thumbnail {
-			display: none;
-		}
-	</style>
+	<link href="css/style.css" rel="stylesheet" type="text/css">
 
 </head>
 <body onscroll="scrolling()">
@@ -151,129 +41,11 @@
 				<a href="tel://0046-708236172">+46 70 823 61 72</a>
 			</i></p>
 		</div>
-		<div id="logo_banner"><!-- <img src="img/Cogitari-logo_Small.png"> --></div>
-		<!-- <hr> -->
+		<div id="logo_banner"></div>
 		<div id="sections" style="position: relative;"></div>
 	</div>
 </div>
 <script type="text/javascript">
-
-var base = '';
-
-var items = {
-	sections: [
-		{	
-			title: 'Video', 
-			id: 'video_section',
-			href: '#video_section',
-			type: 'section',
-			color: '#70CD8F',
-			articles: [{
-				index: 0,
-				type: 'video',
-				title: 'trailers',
-				thumbnail: '/img/V_Trailers@2x.png',
-				sniplet: '',
-				description: 'Trailer för Pannkakskyrkan ’GO!’, 2016\n"Vi gillade Andreas breda kompetens!"',
-				read_more: 'Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra...'
-			},{
-				index: 1,
-				type: 'video',
-				title: 'grafik',
-				thumbnail: '/img/V_Grafik@2x.png',
-				sniplet: '',
-				description: '',
-				read_more: 'Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra...'
-			},{
-				index: 2,
-				type: 'video',
-				title: 'bröllop',
-				thumbnail: '/img/V_Brollop@2x.png',
-				sniplet: '',
-				description: ''
-			},{
-				index: 3,
-				type: 'video',
-				title: 'dokumentär',
-				thumbnail: '/img/V_Dokumentar@2x.png',
-				sniplet: '',
-				description: ''
-			},{
-				index: 4,
-				type: 'video',
-				title: 'textning',
-				thumbnail: '/img/V_Textning@2x.png',
-				sniplet: '',
-				description: ''
-			}]
-		}, {
-			title: 'Web',
-			id: 'web_section',
-			href: '#web_section',
-			type: 'section',
-			color: '#70CD8F',
-			articles: [{
-				type: 'video',
-				title: 'trailers',
-				thumbnail: '',
-				sniplet: '',
-				description: ''
-			}]
-		}, {
-			title: 'Foto',
-			id: 'foto_section',
-			href: '#foto_section',
-			type: 'section',
-			color: '#70CD8F',
-			articles: [{
-				type: 'video',
-				title: 'trailers',
-				thumbnail: '',
-				sniplet: '',
-				description: ''
-			}]
-		}, {
-			title: 'Musik',
-			id: 'musik_section',
-			href: '#musik_section',
-			type: 'section',
-			color: '#70CD8F',
-			articles: [{
-				type: 'video',
-				title: 'trailers',
-				thumbnail: '',
-				sniplet: '',
-				description: ''
-			}]
-		}, {
-			title: 'Kurser',
-			id: 'kurser_section',
-			href: '#kurser_section',
-			type: 'section',
-			color: '#70CD8F',
-			articles: [{
-				type: 'video',
-				title: 'trailers',
-				thumbnail: '',
-				sniplet: '',
-				description: ''
-			}]
-		}
-	],
-	about: {
-		title: 'Om mig',
-		id: 'about_section',
-		href: '#about_section',
-		type: 'about',
-		color: '#70CD8F'
-	},
-	contact: {
-		title: 'Kontakt',
-		id: 'contact_section',
-		href: '#contact_section',
-		type: 'contact'
-	}
-};
 
 var screen_width = screen.availWidth;
 var screen_height = screen.availHeight;
@@ -286,53 +58,56 @@ var scrolling = function(){
 	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
 }
 
-
-
-d3.select('#menubar')
-	.selectAll('a.menu')
-	.data(items.sections.concat([items.about, items.contact]))
-	.enter().append('a')
-		.attr('href', function(d){ return d.href })
-		.attr('class', 'menu')
-		.append('h2')
-		.html(function(d,i){ return d.title });
-
-
-
 // var card_width = 244;
 var card_width = 244;
 var open_card_x = 50;
 var flip_time = 600;
 var selection = undefined;
 
+getJSON('js/data.json', function(err, data) {
+	if (err) {
+		console.log(err);
+	} else {
+		loadItems(data);
+	}
+});
+
+var loadItems = function(items){
+	d3.select('#menubar')
+		.selectAll('a.menu')
+		.data(items.sections.concat([items.about, items.contact]))
+		.enter().append('a')
+			.attr('href', function(d){ return d.href })
+			.attr('class', 'menu')
+			.append('h2')
+			.html(function(d,i){ return d.title });
 
 
+	var overlay = d3.select("div#sections")
+		.append('div')
+		.attr('id', 'overlay');
 
-var overlay = d3.select("div#sections")
-	.append('div')
-	.attr('id', 'overlay');
-
-var activebox = d3.select("div#sections")
-	.append('div')
-	.attr('id', 'activebox')
-	.style('position', 'absolute');
+	var activebox = d3.select("div#sections")
+		.append('div')
+		.attr('id', 'activebox')
+		.style('position', 'absolute');
 
 
-var sections = d3.select("div#sections")
-	.selectAll("section")
-	.data(items.sections)
-	.enter().append("section")
-	.attr('id', function(section){ return section.id; });
+	var sections = d3.select("div#sections")
+		.selectAll("section")
+		.data(items.sections)
+		.enter().append("section")
+		.attr('id', function(section){ return section.id; });
 
 	//Cards
-sections.each(function(section){
-		
+	sections.each(function(section){
+			
 		d3.select(this).selectAll('article.card')
 			.data(section.articles)
 			.enter().append('article')
 			.attr('class', 'card')
 			
-			.html(function(article) { return '<div class="article" style="position:absolute"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px; margin-top: 10px;"><div class="thumbnail"><img src="'+base+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div>'})
+			.html(function(article) { return '<div class="article" style="position:absolute"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px; margin-top: 10px;"><div class="thumbnail"><img src="'+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div>'})
 			// .style('transform', 'translateZ(-100px)')
 			.style('left', function(article,i) {
 				return i*card_width+'px';
@@ -363,7 +138,7 @@ sections.each(function(section){
 						d3.select(self).dispatch('blur')
 
 						if( self.opening ){
-							overlay.style('z-index', 1).style('opacity', 0.5);
+							overlay.style('z-index', 1).style('opacity', 0.6);
 							d3.select(self).attr('class', 'card active');
 							d3.select(self).dispatch('open');
 						}else{
@@ -444,10 +219,9 @@ sections.each(function(section){
 							d3.select(self).dispatch('deactivate')
 						}
 					});
-			
 			});
-		 var touchstart = {x:0,y:0};
-		 var direction = undefined;
+		var touchstart = {x:0,y:0};
+		var direction = undefined;
 		d3.select(this).selectAll('article.card')
 			.on('touchstart', function(){
 				touchstart = {
@@ -483,6 +257,8 @@ sections.each(function(section){
 				}
 			});
 	});
+}
+
 	/*
 	.selectAll('article.card')
 	.enter().append('article')
