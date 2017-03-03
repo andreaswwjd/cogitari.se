@@ -14,15 +14,23 @@ var getJSON = function(url, callback) {
     xhr.send();
 };
 
+var active = false;
 var screen_width = screen.availWidth;
 var screen_height = screen.availHeight;
 // document.body.style.width = screen_width+'px';
 // document.getElementsByTagName('header')[0].style.width = screen_width+'px';
 var site_width = document.body.clientWidth;
 var site_height = document.body.clientHeight;
-var scrolling = function(){
+var scrolling = function(event){
+	if(active){
+		// event.bubbles = false;
+		event.preventDefault();
+		event.stopPropagation();
+		console.log(event)
+	}
 	var window_mid = window.scrollY+screen.availHeight/2;
 	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
+
 }
 
 // var card_width = 244;
@@ -30,6 +38,8 @@ var card_width = 244;
 var open_card_x = 50;
 var flip_time = 600;
 var selection = undefined;
+var act_time = 0;
+var animation_turnoff = false;
 
 getJSON('js/data.json', function(err, data) {
 	if (err) {
@@ -52,7 +62,10 @@ var loadItems = function(items){
 
 	var overlay = d3.select("div#sections")
 		.append('div')
-		.attr('id', 'overlay');
+		.attr('id', 'overlay')
+		.on('click', function(){
+			d3.selectAll('article.active').dispatch('click');
+		});
 
 	var activebox = d3.select("div#sections")
 		.append('div')
@@ -82,6 +95,7 @@ var loadItems = function(items){
 			.on('activate', function(article){
 				this.active = true;
 				document.getElementById('activebox').appendChild(this);
+				active = true;
 			})
 			.on('deactivate', function(article){
 				this.active = false;
@@ -91,8 +105,32 @@ var loadItems = function(items){
 				d3.select('#logo_banner').style('filter', this.opening ? 'blur(2px)' : 'blur(0px)')
 				d3.selectAll('section').style('filter', this.opening ? 'blur(2px)' : 'blur(0px)')
 			})
+			.on('no_animation', function(){
+				var self = this;
+				overlay.style('z-index', self.active ? 1 : 0).style('opacity', self.active ? 0.6 : 0);
+				d3.select(self).attr('class', self.active ? 'card active' : 'card');
+				d3.select(self).selectAll('div.paper').style("box-shadow", self.active ? "10px 23px 50px -10px rgba(0, 0, 0, 0.26)" : "0 3px 6px rgba(0, 0, 0, 0.16)");
+				d3.select('#logo_banner').style('filter', this.active ? 'blur(2px)' : 'blur(0px)')
+				d3.selectAll('section').style('filter', this.active ? 'blur(2px)' : 'blur(0px)')
+				d3.select(self).selectAll('div.content').style("display", self.active ? 'block': 'none');
+				d3.select(self)
+					.transition().duration(flip_time)
+					.styleTween("left", function(d,i) {
+						console.log('left')
+						var tx = d3.interpolate(d.index*card_width, open_card_x);
+					    return function(t) {
+					        return self.active ? tx(t)+"px":tx(1-t)+"px";
+					    };
+					})
+					
+			})
 			.on('click', function(d){
 				var self = this;
+				act_time = Date.now();
+			if(animation_turnoff){
+				!this.active ? d3.select(self).dispatch('activate') : d3.select(self).dispatch('deactivate'); 
+				d3.select(self).dispatch('no_animation');
+			}else{
 				
 				!this.active ? d3.select(self).dispatch('activate') : 'Deactivation occures later at end of animation'; 
 
@@ -107,10 +145,8 @@ var loadItems = function(items){
 						if( self.opening ){
 							overlay.style('z-index', 1).style('opacity', 0.6);
 							d3.select(self).attr('class', 'card active');
-							d3.select(self).dispatch('open');
 						}else{
 							overlay.style('opacity', 0);
-
 						}	
 					})
 					// .html('<div class="thumbnail"></div><hr>')
@@ -124,7 +160,7 @@ var loadItems = function(items){
 						return function(){ return self.opening ? "10px 23px 50px -10px rgba(0, 0, 0, 0.26)" : "0 3px 6px rgba(0, 0, 0, 0.16)"; } 
 					});
 				//Img
-				d3.select(self).selectAll('div.paper').selectAll('img')
+				d3.select(self).selectAll('img')
 					.transition().duration(flip_time)
 					.styleTween("-webkit-filter", function(){
 						var br = d3.interpolate('brightness(100%)', 'brightness(5%)');
@@ -133,14 +169,14 @@ var loadItems = function(items){
 					    };
 					});
 				//Content
-				d3.select(self).selectAll('div.paper').selectAll('div.thumbnail')
+				d3.select(self).selectAll('div.thumbnail')
 					.transition().duration(flip_time)
 					.styleTween("display", function(){
 						return function(t) {
 					        return t>0.5&&self.opening || (1-t)>0.5&&self.closing ? 'none': 'block';
 					    };
 					});
-				d3.select(self).selectAll('div.paper').selectAll('div.content')
+				d3.select(self).selectAll('div.content')
 					.transition().duration(flip_time)
 					.styleTween("display", function(){
 						return function(t) {
@@ -150,7 +186,7 @@ var loadItems = function(items){
 
 				// Transform
 				d3.select(self)
-					.attr('class', 'card active')
+					// .attr('class', 'card active')
 					.transition().duration(flip_time)
 					.styleTween("transform", function() {
 						var tf_ry = d3.interpolate(0, 180);
@@ -177,6 +213,11 @@ var loadItems = function(items){
 					    };
 					})
 					.on('end', function() {
+						act_time = Date.now()-act_time;
+						if (act_time>flip_time*1.2) {
+							animation_turnoff = confirm(act_time+'ms: Wow, that was hacky.. Wanna turn off transitions?');;
+						}
+						
 						self.opening = false;
 						self.closing = false;
 						self.isOpen = !self.isOpen;
@@ -186,6 +227,7 @@ var loadItems = function(items){
 							d3.select(self).dispatch('deactivate')
 						}
 					});
+			}
 			});
 		var touchstart = {x:0,y:0};
 		var direction = undefined;

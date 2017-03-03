@@ -7,42 +7,42 @@
 			"type": "section",
 			"color": "#70CD8F",
 			"articles": [{
-			"index": 0,
-			"type": "video",
-			"title": "trailers",
-			"thumbnail": "/img/V_Trailers@2x.png",
-			"sniplet": "",
-			"description": "Trailer för Pannkakskyrkan ’GO!’, 2016\n’Vi gillade Andreas breda kompetens!’",
-			"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra..."
+				"index": 0,
+				"type": "video",
+				"title": "trailers",
+				"thumbnail": "/img/V_Trailers@2x.png",
+				"sniplet": "",
+				"description": "Trailer för Pannkakskyrkan ’GO!’, 2016\n’Vi gillade Andreas breda kompetens!’",
+				"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra..."
 			},{
-			"index": 1,
-			"type": "video",
-			"title": "grafik",
-			"thumbnail": "/img/V_Grafik@2x.png",
-			"sniplet": "",
-			"description": "",
-			"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra..."
+				"index": 1,
+				"type": "video",
+				"title": "grafik",
+				"thumbnail": "/img/V_Grafik@2x.png",
+				"sniplet": "",
+				"description": "",
+				"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra..."
 			},{
-			"index": 2,
-			"type": "video",
-			"title": "bröllop",
-			"thumbnail": "/img/V_Brollop@2x.png",
-			"sniplet": "",
-			"description": ""
+				"index": 2,
+				"type": "video",
+				"title": "bröllop",
+				"thumbnail": "/img/V_Brollop@2x.png",
+				"sniplet": "",
+				"description": ""
 			},{
-			"index": 3,
-			"type": "video",
-			"title": "dokumentär",
-			"thumbnail": "/img/V_Dokumentar@2x.png",
-			"sniplet": "",
-			"description": ""
+				"index": 3,
+				"type": "video",
+				"title": "dokumentär",
+				"thumbnail": "/img/V_Dokumentar@2x.png",
+				"sniplet": "",
+				"description": ""
 			},{
-			"index": 4,
-			"type": "video",
-			"title": "textning",
-			"thumbnail": "/img/V_Textning@2x.png",
-			"sniplet": "",
-			"description": ""
+				"index": 4,
+				"type": "video",
+				"title": "textning",
+				"thumbnail": "/img/V_Textning@2x.png",
+				"sniplet": "",
+				"description": ""
 			}]
 		}, {
 			"title": "Web",
@@ -51,11 +51,11 @@
 			"type": "section",
 			"color": "#70CD8F",
 			"articles": [{
-			"type": "video",
-			"title": "trailers",
-			"thumbnail": "",
-			"sniplet": "",
-			"description": ""
+				"type": "web",
+				"title": "trailers",
+				"thumbnail": "",
+				"sniplet": "",
+				"description": ""
 			}]
 		}, {
 			"title": "Foto",
@@ -64,11 +64,11 @@
 			"type": "section",
 			"color": "#70CD8F",
 			"articles": [{
-			"type": "video",
-			"title": "trailers",
-			"thumbnail": "",
-			"sniplet": "",
-			"description": ""
+				"type": "foto",
+				"title": "trailers",
+				"thumbnail": "",
+				"sniplet": "",
+				"description": ""
 			}]
 		}, {
 			"title": "Musik",
@@ -77,11 +77,11 @@
 			"type": "section",
 			"color": "#70CD8F",
 			"articles": [{
-			"type": "video",
-			"title": "trailers",
-			"thumbnail": "",
-			"sniplet": "",
-			"description": ""
+				"type": "musik",
+				"title": "trailers",
+				"thumbnail": "",
+				"sniplet": "",
+				"description": ""
 			}]
 		}, {
 			"title": "Kurser",
@@ -90,11 +90,11 @@
 			"type": "section",
 			"color": "#70CD8F",
 			"articles": [{
-			"type": "video",
-			"title": "trailers",
-			"thumbnail": "",
-			"sniplet": "",
-			"description": ""
+				"type": "kurser",
+				"title": "trailers",
+				"thumbnail": "",
+				"sniplet": "",
+				"description": ""
 			}]
 		}
 	],
