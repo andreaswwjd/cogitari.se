@@ -152,7 +152,7 @@
 			</i></p>
 		</div>
 		<div id="logo_banner"><!-- <img src="img/Cogitari-logo_Small.png"> --></div>
-		<hr style="width: 10px;">
+		<!-- <hr> -->
 		<div id="sections" style="position: relative;"></div>
 	</div>
 </div>
@@ -300,7 +300,7 @@ d3.select('#menubar')
 
 
 // var card_width = 244;
-var card_width = 259;
+var card_width = 244;
 var open_card_x = 50;
 var flip_time = 600;
 var selection = undefined;
@@ -311,6 +311,12 @@ var selection = undefined;
 var overlay = d3.select("div#sections")
 	.append('div')
 	.attr('id', 'overlay');
+
+var activebox = d3.select("div#sections")
+	.append('div')
+	.attr('id', 'activebox')
+	.style('position', 'absolute');
+
 
 var sections = d3.select("div#sections")
 	.selectAll("section")
@@ -326,32 +332,43 @@ sections.each(function(section){
 			.enter().append('article')
 			.attr('class', 'card')
 			
-			.html(function(article) { return '<div class="articles" style="position:absolute"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px; margin-top: 10px;"><div class="thumbnail"><img src="'+base+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div>'})
-			.style('transform', 'translateZ(-100px)')
+			.html(function(article) { return '<div class="article" style="position:absolute"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px; margin-top: 10px;"><div class="thumbnail"><img src="'+base+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div>'})
+			// .style('transform', 'translateZ(-100px)')
 			.style('left', function(article,i) {
 				return i*card_width+'px';
 			})
-			.on('open', function(){
-				console.log('Open'+this);
+			.on('activate', function(article){
+				this.active = true;
+				document.getElementById('activebox').appendChild(this);
 			})
-			.on('click', function(){
+			.on('deactivate', function(article){
+				this.active = false;
+				document.getElementById(article.type+'_section').appendChild(this);
+			})
+			.on('blur', function(){
+				d3.select('#logo_banner').style('filter', this.opening ? 'blur(2px)' : 'blur(0px)')
+				d3.selectAll('section').style('filter', this.opening ? 'blur(2px)' : 'blur(0px)')
+			})
+			.on('click', function(d){
 				var self = this;
-				self.active = !self.active;
-				// self.opening = !self.isOpen;
-				console.log(self);
-
 				
+				!this.active ? d3.select(self).dispatch('activate') : 'Deactivation occures later at end of animation'; 
+
 				//Shadows
 				d3.select(self).selectAll('div.paper')
 					.transition().duration(flip_time)
 					.on('start', function(){
 						self.opening = !self.isOpen;
 						self.closing = self.isOpen;
+						d3.select(self).dispatch('blur')
+
 						if( self.opening ){
 							overlay.style('z-index', 1).style('opacity', 0.5);
 							d3.select(self).attr('class', 'card active');
+							d3.select(self).dispatch('open');
 						}else{
 							overlay.style('opacity', 0);
+
 						}	
 					})
 					// .html('<div class="thumbnail"></div><hr>')
@@ -395,7 +412,7 @@ sections.each(function(section){
 					.transition().duration(flip_time)
 					.styleTween("transform", function() {
 						var tf_ry = d3.interpolate(0, 180);
-						var tf_tz = d3.interpolate(-100, 100);
+						var tf_tz = d3.interpolate(0, 100);
 						// var tf_sc = d3.interpolate(1, 1.2);
 					    return function(t) {
 					    	var rt = t>0.5 ? t-1 : t;
@@ -424,6 +441,7 @@ sections.each(function(section){
 						if(!self.isOpen){
 							d3.select(self).attr('class', 'card');
 							overlay.style('z-index', 0).style('opacity', 0);
+							d3.select(self).dispatch('deactivate')
 						}
 					});
 			
