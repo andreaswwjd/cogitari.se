@@ -26,7 +26,7 @@ var scrolling = function(event){
 		// event.bubbles = false;
 		event.preventDefault();
 		event.stopPropagation();
-		console.log(event)
+		d3.select('#active').style('margin-top', event.)
 	}
 	var window_mid = window.scrollY+screen.availHeight/2;
 	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
@@ -35,7 +35,7 @@ var scrolling = function(event){
 
 // var card_width = 244;
 var card_width = 244;
-var open_card_x = 50;
+var open_card_x = 0.05*site_width;
 var flip_time = 600;
 var selection = undefined;
 var act_time = 0;
@@ -87,7 +87,7 @@ var loadItems = function(items){
 			.enter().append('article')
 			.attr('class', 'card')
 			
-			.html(function(article) { return '<div class="article" style="position:absolute"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px; margin-top: 10px;"><div class="thumbnail"><img src="'+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div>'})
+			.html(function(article) { return '<div class="article"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px;"><div class="thumbnail"><img src="'+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div><div class="paper article_content">'+article.content_html+'</div>'})
 			// .style('transform', 'translateZ(-100px)')
 			.style('left', function(article,i) {
 				return i*card_width+'px';
@@ -108,7 +108,7 @@ var loadItems = function(items){
 			.on('no_animation', function(){
 				var self = this;
 				overlay.style('z-index', self.active ? 1 : 0).style('opacity', self.active ? 0.6 : 0);
-				d3.select(self).attr('class', self.active ? 'card active' : 'card');
+				d3.select(self).attr('class', self.active ? 'card active open' : 'card');
 				d3.select(self).selectAll('div.paper').style("box-shadow", self.active ? "10px 23px 50px -10px rgba(0, 0, 0, 0.26)" : "0 3px 6px rgba(0, 0, 0, 0.16)");
 				d3.select('#logo_banner').style('filter', this.active ? 'blur(2px)' : 'blur(0px)')
 				d3.selectAll('section').style('filter', this.active ? 'blur(2px)' : 'blur(0px)')
@@ -147,6 +147,7 @@ var loadItems = function(items){
 							d3.select(self).attr('class', 'card active');
 						}else{
 							overlay.style('opacity', 0);
+							d3.select(self).attr('class', 'card active');
 						}	
 					})
 					// .html('<div class="thumbnail"></div><hr>')
@@ -217,7 +218,6 @@ var loadItems = function(items){
 						if (act_time>flip_time*1.2) {
 							animation_turnoff = confirm(act_time+'ms: Wow, that was hacky.. Wanna turn off transitions?');;
 						}
-						
 						self.opening = false;
 						self.closing = false;
 						self.isOpen = !self.isOpen;
@@ -225,6 +225,8 @@ var loadItems = function(items){
 							d3.select(self).attr('class', 'card');
 							overlay.style('z-index', 0).style('opacity', 0);
 							d3.select(self).dispatch('deactivate')
+						}else{
+							d3.select(self).attr('class', 'card active open');
 						}
 					});
 			}

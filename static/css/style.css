@@ -57,10 +57,31 @@ article.card  div.paper {
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
 	width: 204px;
 	padding: 10px;
+	margin-bottom: 10px;
 	transition: 0.6s box-shadow;
 }
 article.card.active {
 	z-index: 2;
+}
+article.card.active.open {
+	width: 80%;
+}
+article.card.active .article {
+	width: 204px;
+	float: left;
+    display: inline-block;
+}
+article.card .article_content {
+	display: none;
+}
+article.card.active.open .article_content {
+	height: 132%;
+    width: 100%;
+    padding: 10px;
+    display: inline-block;
+    float: right;
+    min-width: 300px;
+    max-width: 70%;
 }
 .thumbnail img {
     max-width: 204px;
@@ -80,9 +101,9 @@ h1 {
 	font-family: 'Ubuntu';
 	font-weight: bold;
 	font-size: 18px;
-	-webkit-margin-before: 0px;
-	-webkit-margin-after: 0px;
-	margin-left: 0;
+/*	-webkit-margin-before: 0px;
+	-webkit-margin-after: 0px;*/
+	margin: 0;
 
 }
 h2 {
@@ -139,19 +160,4 @@ article.card.active .thumbnail {
     background: radial-gradient(at top left, #ff67ad, #ff3ba8);
     color: white;
 }*/
-/*
-.active:after {
-	content: '<h1>Fin kvalite med fin utrustning</h1><p>Under mina år som aktiv videograf har jag samlat <br>på mig kompakt men bästa utrustning för att kunna <br>göra det bästa produktionerna du någonsin kan tänka dig.</p>';
-	width: 760px;
-    height: 404px;
-    padding: 20px;
-    float: right;
-    left: 313px;
-    background: rgba(255, 255, 255, 0.8);
-    opacity: 1;
-    z-index: 5;
-    display: inline-block;
-    transform: translate3d(0, 0, 100px);
-    box-shadow: rgba(0, 0, 0, 0.258824) 10px 23px 50px -10px;
-    position: absolute;
-}*/
+/*e*/

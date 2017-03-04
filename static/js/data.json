@@ -13,7 +13,8 @@
 				"thumbnail": "/img/V_Trailers@2x.png",
 				"sniplet": "",
 				"description": "Trailer för Pannkakskyrkan ’GO!’, 2016\n’Vi gillade Andreas breda kompetens!’",
-				"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra..."
+				"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra...",
+				"content_html": "<h1>Rätt magkänsla</h1><p>Utmaningen när man gör en trailer är att lyckas förmedla rätt atmosfär. Man vill att tittaren ska ha en god känsla i magen, samtidigt som budskapet måste vara pedagogiskt och tydligt komminucerat.</p>"
 			},{
 				"index": 1,
 				"type": "video",
@@ -21,7 +22,8 @@
 				"thumbnail": "/img/V_Grafik@2x.png",
 				"sniplet": "",
 				"description": "",
-				"read_more": "Här ska alltså den verkliga beskrivningen stå. Alltså den som ska ge klienten en god grund till vad jag förmår göra..."
+				"read_more": "<h1>Rätt magkänsla</h1><p>Utmaningen när man gör en trailer är att lyckas förmedla rätt atmosfär. Man vill att tittaren ska ha en god känsla i magen, samtidigt som budskapet måste vara pedagogiskt och tydligt komminucerat.</p>",
+				"content_html": "<h1>The Costa Rica Solution</h1><video style='width: 100%' controls><source src='video/The_Costa_Rica_Solution-HD.mp4' type='video/mp4'></video><p>Utmaningen när man gör en trailer är att lyckas förmedla rätt atmosfär. Man vill att tittaren ska ha en god känsla i magen, samtidigt som budskapet måste vara pedagogiskt och tydligt komminucerat.</p>"
 			},{
 				"index": 2,
 				"type": "video",
