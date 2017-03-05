@@ -26,7 +26,7 @@ var scrolling = function(event){
 		// event.bubbles = false;
 		event.preventDefault();
 		event.stopPropagation();
-		d3.select('#active').style('margin-top', event.)
+		// d3.select('.active').style('margin-top', window.scrollY+'px')
 	}
 	var window_mid = window.scrollY+screen.availHeight/2;
 	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');

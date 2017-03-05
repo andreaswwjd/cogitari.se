@@ -146,7 +146,7 @@ a.menu:hover {
 article.card.active .thumbnail {
 	display: none;
 }
-/*.active:before {
+.open:before {
     width: 21px;
     height: 21px;
     position: absolute;
@@ -159,5 +159,5 @@ article.card.active .thumbnail {
     border-radius: 50%;
     background: radial-gradient(at top left, #ff67ad, #ff3ba8);
     color: white;
-}*/
+}
 /*e*/
