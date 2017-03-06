@@ -41,7 +41,7 @@ p {
     overflow: hidden;
     max-height: 310px;
     background-position: center;
-    background-size: 70%;
+    background-size: 100%;
     background-repeat: no-repeat;
 
 }
@@ -104,9 +104,17 @@ a.menu:hover {
 #cards {
 	margin: 10px 10px;
 }
+.title_img {
+	height: 4em;
+}
 section {
 	height: 500px;
 	display: block;
+	position: relative;
+    margin-top: 100px;
+}
+#activebox {
+	margin-top: 100px;
 }
 article.card {
 	position: absolute;
@@ -185,6 +193,9 @@ div#overlay {
 @media screen and (min-width: 480px) {
 	h2 {
 		font-size: 13px;
+	}
+	#logo_banner {
+	    background-size: 70%;
 	}
 	header #menubar:before {
 		display: none;

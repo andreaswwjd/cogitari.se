@@ -75,8 +75,8 @@ var loadItems = function(items){
 		.enter().append('a')
 			.attr('class', 'menu')
 			.on('click', function(d){ 
-				var node = document.getElementById(d.id);
-				window.smoothScroll(node, 800);
+				var Y = document.getElementById(d.id).getClientRects()[0].top+window.scrollY;
+				window.smoothScroll(Y-150, 800);
 				header.close();
 			})
 			// .attr('href', function(d){ return ''; /*d.href*/ })
@@ -101,7 +101,8 @@ var loadItems = function(items){
 		.selectAll("section")
 		.data(items.sections)
 		.enter().append("section")
-		.attr('id', function(section){ return section.id; });
+		.attr('id', function(section){ return section.id; })
+		.html(function(section){ return "<img class='title_img' style='position: absolute; top: -100px;' src='img/Title_"+section.title+".png'>"});
 
 	//Cards
 	sections.each(function(section){
