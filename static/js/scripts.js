@@ -24,7 +24,7 @@ var screen_width = screen.availWidth;
 var screen_height = screen.availHeight;
 var site_width = document.body.clientWidth;
 var site_height = document.body.clientHeight;
-var changePerspective = function(event){
+window.onscroll = function(event){
 	if(!is_touch_device){
 		var window_mid = window.scrollY+screen.availHeight/2;
 		d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
@@ -49,9 +49,16 @@ header.toggle = function(){
 	this.isOpen ? this.close() : this.open() ;
 }
 
+var openSection = function(id){
+	if(screen.availWidth<480){
+		var s = document.getElementById(id);
+		s.isOpen ? d3.select(s).dispatch('close') : d3.select(s).dispatch('open'); 
+	}
+}
+
 
 // var card_width = 244;
-var card_width = 244;
+var card_width = 104;
 var open_card_x = 0.05*site_width;
 var flip_time = 600;
 var selection = undefined;
@@ -134,27 +141,54 @@ var loadItems = function(items){
 			}
 		});
 
-
 	var sections = d3.select("div#sections")
 		.selectAll("section")
 		.data(items.sections)
 		.enter().append("section")
 		.attr('id', function(section){ return section.id; })
-		.html(function(section){ return "<img class='title_img' style='position: absolute; top: -70px;' src='img/Title_"+section.title+".png'>"});
+		.html(function(section){ return "<img class='title_img' onclick='openSection(\""+section.id+"\")' src='img/Title_"+section.title+".png'>"})
+		.on('open', function(){
+			this.isOpen = true;
+			d3.select(this).dispatch('aninamte_cards').style('height', '500px')
+				.selectAll('article.card').style('display', 'inline-block');
+		})
+		.on('close', function(){
+			this.isOpen = false;
+			d3.select(this).selectAll('article.card').style('left',function(){this.left = 1500; return this.left+'px'});
+			d3.select(this).style('height', '70px')
+				.selectAll('article.card').style('display', 'none');
+
+		})
+		.on("aninamte_cards", function(){
+			console.log('aninamte_cards');
+			d3.select(this).selectAll('article.card').transition().ease(d3.easeExpOut).duration(500).delay(function(a,i){return (4-i)*50})
+				.styleTween('left', function(article,i) {
+					this.left = i*card_width;
+					var l = d3.interpolate(this.left+1500, this.left);
+				    return function(t) {
+				        return l(t)+"px";
+				    };
+					return this.left+'px';
+				})
+		});
 // <div id='activebox_"+section.id+"' class='activebox'></div>
 	//Cards
 	sections.each(function(section){
+
 			
 		d3.select(this).selectAll('article.card')
 			.data(section.articles)
 			.enter().append('article')
 			.attr('class', 'card')
 			
-			.html(function(article) { return '<div class="article"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px;"><div class="thumbnail"><img src="'+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div><div class="paper article_content">'+article.content_html+'</div>'})
-			// .style('transform', 'translateZ(-100px)')
+			.html(function(article, i) { 
+				return '<div class="article"><div class="paper"><h1>'+article.title+'</h1></div><div class="paper" style="height: 333px;"><div class="thumbnail"><img src="'+article.thumbnail+'"><hr><p><i>'+article.description+'</i></p></div><div class="content" style="display: none"><p>'+article.read_more+'</p></div></div></div><div class="paper article_content">'+article.content_html+'</div>'
+			})
 			.style('left', function(article,i) {
-				this.left = i*card_width;
+				// this.left = i*card_width;
+				this.left = 1500;
 				return this.left+'px';
+				// d3.select(self).dispatch('aninamte_cards')
 			})
 			.on('activate', function(article){
 				this.active = true;
@@ -255,7 +289,7 @@ var loadItems = function(items){
 						.transition().duration(flip_time)
 						.styleTween("transform", function() {
 							var tf_ry = d3.interpolate(0, 180);
-							var tf_tz = d3.interpolate(0, 30);
+							var tf_tz = d3.interpolate(0, 65);
 							// var tf_sc = d3.interpolate(1, 1.2);
 						    return function(t) {
 						    	var rt = t>0.5 ? t-1 : t;
@@ -340,5 +374,8 @@ var loadItems = function(items){
 					});
 				}
 			});
+		d3.select(this).dispatch('aninamte_cards');
+
 	});
+
 }
