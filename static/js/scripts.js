@@ -290,7 +290,7 @@ var loadItems = function(items){
 					// if(moveX*moveX> 100*100){
 						var n = Math.round(moveX/card_width);
 
-						d3.select('#'+section.id).selectAll('.card').transition().duration(300).styleTween('left', function(){
+						d3.select('#'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeExpOut).styleTween('left', function(){
 							var l = d3.interpolate(this.left+moveX, this.left+(n*card_width));
 							this.left += n*card_width;
 						    return function(t) {
