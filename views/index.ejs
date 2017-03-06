@@ -2,16 +2,26 @@
 <html>
 <head>
 	<title>Cogitari Media</title>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="MobileOptimized" content="320">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+
+    <link rel="apple-touch-icon-precomposed" href="img/Cogitari_logo_152x152.png">
+
+    <script type="text/javascript" src="js/smoothscroll.min.js"></script>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Raleway:900|Ubuntu" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet" type="text/css">
 
 </head>
-<body onscroll="scrolling(event)">
+<body onscroll="changePerspective(event)">
 <div style="overflow: hidden; width: 100%;">
 	<header>
 		<div id="menubar" style="text-align: left; max-width: 1200px;">
-			<div style="width: 200px;float: right;"><a href="#logo_banner" style="margin-top: 10px;"><img src="img/Cogitari-logo-aqua-02@2x.png" style="height: 30px;"></a></div>
+			<div id="menu"></div>
+			<!-- <div style="width: 200px;float: right;"><a href="" style="margin-top: 10px;"><img src="img/Cogitari-logo-aqua-02@2x.png" style="height: 30px;"></a></div> -->
 		</div>
 	</header>
 	<div id="content" style=" perspective: 2000px; perspective-origin: 0px 400px;">

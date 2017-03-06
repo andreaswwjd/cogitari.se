@@ -21,7 +21,7 @@ var screen_height = screen.availHeight;
 // document.getElementsByTagName('header')[0].style.width = screen_width+'px';
 var site_width = document.body.clientWidth;
 var site_height = document.body.clientHeight;
-var scrolling = function(event){
+var changePerspective = function(event){
 	if(active){
 		// event.bubbles = false;
 		event.preventDefault();
@@ -32,6 +32,25 @@ var scrolling = function(event){
 	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
 
 }
+
+//Menu
+var header = document.getElementsByTagName('header')[0];
+var menu_icon = document.getElementById('menu');
+menu_icon.onclick = function(){
+	header.toggle();
+}
+header.open = function(){
+	this.isOpen = true; 
+	header.style.height = '100%';
+}
+header.close = function(){
+	this.isOpen = false; 
+	header.style.height = '2.5em';
+}
+header.toggle = function(){
+	this.isOpen ? this.close() : this.open() ;
+}
+
 
 // var card_width = 244;
 var card_width = 244;
@@ -54,10 +73,15 @@ var loadItems = function(items){
 		.selectAll('a.menu')
 		.data(items.sections.concat([items.about, items.contact]))
 		.enter().append('a')
-			.attr('href', function(d){ return d.href })
 			.attr('class', 'menu')
-			.append('h2')
-			.html(function(d,i){ return d.title });
+			.on('click', function(d){ 
+				var node = document.getElementById(d.id);
+				window.smoothScroll(node, 800);
+				header.close();
+			})
+			// .attr('href', function(d){ return ''; /*d.href*/ })
+				.append('h2')
+				.html(function(d,i){ return d.title });
 
 
 	var overlay = d3.select("div#sections")
