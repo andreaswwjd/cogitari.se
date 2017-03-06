@@ -265,7 +265,6 @@ var loadItems = function(items){
 				this.touchstart.x = d3.event.touches[0].clientX;
 				this.touchstart.y = d3.event.touches[0].clientY;
 				this.touchstart.dir = undefined;
-				console.log(this.touchstart)
 			})
 			.on('touchmove', function(){
 				// console.log(d3.event.touches[0].clientX - this.touchstart.x + (this.touchstart.moveX || 0))
@@ -277,39 +276,20 @@ var loadItems = function(items){
 				if(this.touchstart.dir == 'x'){
 					d3.event.preventDefault();
 					// d3.select('#'+section.id).selectAll('.card').style('margin-left', (moveX + this.touchstart.moveX || moveX)+'px');
-					d3.select('#'+section.id).selectAll('.card').style('left', function(){console.log(this.left); return (this.left + moveX )+'px'});
+					d3.select('#'+section.id).selectAll('.card').style('left', function(){ return (this.left + moveX )+'px'});
 				}
 			})
 			.on('touchend', function(){
 				if(this.touchstart.dir == 'x'){
-					console.log(d3.event)
 					var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
-
-					// var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x + this.touchstart.moveX;
-					console.log(Math.round(moveX/card_width))
-					// if(moveX*moveX> 100*100){
-						var n = Math.round(moveX/card_width);
-
-						d3.select('#'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeExpOut).styleTween('left', function(){
-							var l = d3.interpolate(this.left+moveX, this.left+(n*card_width));
-							this.left += n*card_width;
-						    return function(t) {
-						        return l(t)+"px";
-						    };
-						});
-						// d3.select('#'+section.id).selectAll('.card').style('left', function(){ return this.left +'px'});
-					// }else{
-					// 	// d3.select('#'+section.id).selectAll('.card').style('left', function(){ this.left += moveX; return this.left +'px'});
-
-					// 	d3.select('#'+section.id).selectAll('.card').transition().duration(300).styleTween('left', function(){
-					// 		var l = d3.interpolate(this.left+moveX, this.left);
-					// 	    return function(t) {
-					// 	        return l(t)+"px";
-					// 	    };
-					// 	});
-					// }
-					// this.touchstart.moveX = moveX;
-
+					var n = Math.round(moveX/card_width*1.5);
+					d3.select('#'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeExpOut).styleTween('left', function(){
+						var l = d3.interpolate(this.left+moveX, this.left+(n*card_width));
+						this.left += n*card_width;
+					    return function(t) {
+					        return l(t)+"px";
+					    };
+					});
 				}
 			});
 	});
