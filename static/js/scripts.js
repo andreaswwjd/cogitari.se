@@ -123,15 +123,16 @@ var loadItems = function(items){
 					d3.selectAll('article.active').dispatch('click');
 					return (open_card_x + moveX)+'px';
 				});
-			}else{
-				d3.select('#activebox_'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeQuadOut).styleTween('left', function(){
-						var l = d3.interpolate(this.left+moveX, open_card_x);
-					    return function(t) {
-					        return l(t)+"px";
-					    };
-					});
 			}
-		});;
+			if(this.touchstart.dir == 'x' && moveX*moveX < 150*150){
+				d3.select('#activebox_'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeQuadOut).styleTween('left', function(){
+					var l = d3.interpolate(this.left+moveX, open_card_x);
+				    return function(t) {
+				        return l(t)+"px";
+				    };
+				});
+			}
+		});
 
 
 	var sections = d3.select("div#sections")
