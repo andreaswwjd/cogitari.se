@@ -105,16 +105,15 @@ a.menu:hover {
 	margin: 10px 10px;
 }
 .title_img {
-	height: 4em;
+	height: 5em;
 }
 section {
 	height: 500px;
 	display: block;
 	position: relative;
-    margin-top: 100px;
 }
-#activebox {
-	margin-top: 100px;
+section, .activebox {
+	margin-top: 50px;
 }
 article.card {
 	position: absolute;

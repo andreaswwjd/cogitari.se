@@ -91,10 +91,14 @@ var loadItems = function(items){
 			d3.selectAll('article.active').dispatch('click');
 		});
 
-	var activebox = d3.select("div#sections")
-		.append('div')
-		.attr('id', 'activebox')
-		.style('position', 'absolute');
+	var activeboxes = d3.select("div#sections")
+		.selectAll(".activebox")
+		.data(items.sections)
+		.enter().append('div')
+		.attr('class', 'activebox')
+		.attr('id', function(section){ return "activebox_"+section.id; })
+		.style('position', 'absolute')
+		.style('top', function(s,i){ return i*550+"px";});
 
 
 	var sections = d3.select("div#sections")
@@ -103,7 +107,7 @@ var loadItems = function(items){
 		.enter().append("section")
 		.attr('id', function(section){ return section.id; })
 		.html(function(section){ return "<img class='title_img' style='position: absolute; top: -100px;' src='img/Title_"+section.title+".png'>"});
-
+// <div id='activebox_"+section.id+"' class='activebox'></div>
 	//Cards
 	sections.each(function(section){
 			
@@ -119,7 +123,8 @@ var loadItems = function(items){
 			})
 			.on('activate', function(article){
 				this.active = true;
-				document.getElementById('activebox').appendChild(this);
+				console.log('activebox_'+article.type+'_section');
+				document.getElementById('activebox_'+article.type+'_section').appendChild(this);
 				active = true;
 			})
 			.on('deactivate', function(article){
