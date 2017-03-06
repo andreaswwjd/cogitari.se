@@ -96,7 +96,34 @@ var loadItems = function(items){
 		.attr('class', 'activebox')
 		.attr('id', function(section){ return "activebox_"+section.id; })
 		.style('position', 'absolute')
-		.style('top', function(s,i){ return i*550+"px";});
+		.style('top', function(s,i){ return i*550+"px";})
+		.on('touchstart', function(){
+			console.log(this);
+			!this.touchstart ? this.touchstart = {moveX: 0}: 'pass';
+			this.touchstart.x = d3.event.touches[0].clientX;
+			this.touchstart.y = d3.event.touches[0].clientY;
+			this.touchstart.dir = undefined;
+		})
+		.on('touchmove', function(section){
+			var moveX = d3.event.touches[0].clientX - this.touchstart.x;
+			var moveY = d3.event.touches[0].clientY - this.touchstart.y;
+			if(!this.touchstart.dir && moveX*moveX > 25){ this.touchstart.dir = 'x'; }
+			if(!this.touchstart.dir && moveY*moveY > 25){ this.touchstart.dir = 'y'; }
+			if(this.touchstart.dir == 'x'){
+				d3.event.preventDefault();
+				d3.select('#activebox_'+section.id).selectAll('.card').style('left', function(){ return (open_card_x + moveX )+'px'});
+			}
+		})
+		.on('touchend', function(section){
+			if(this.touchstart.dir == 'x'){
+				var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
+				d3.select('#activebox_'+section.id).selectAll('.card')
+				.style('left', function(){
+					d3.selectAll('article.active').dispatch('click');
+					return this.left+'px';
+				});
+			}
+		});;
 
 
 	var sections = d3.select("div#sections")
@@ -265,11 +292,16 @@ var loadItems = function(items){
 				this.touchstart.x = d3.event.touches[0].clientX;
 				this.touchstart.y = d3.event.touches[0].clientY;
 				this.touchstart.dir = undefined;
+				this.touchstart.vel = [];
 			})
 			.on('touchmove', function(){
+					// console.log(d3.event.touches[0].force);
+
 				// console.log(d3.event.touches[0].clientX - this.touchstart.x + (this.touchstart.moveX || 0))
 				var moveX = d3.event.touches[0].clientX - this.touchstart.x;
 				var moveY = d3.event.touches[0].clientY - this.touchstart.y;
+				this.touchstart.vel.push(moveX);
+
 				if(!this.touchstart.dir && moveX*moveX > 25){ this.touchstart.dir = 'x'; }
 				if(!this.touchstart.dir && moveY*moveY > 25){ this.touchstart.dir = 'y'; }
 				// moveX += this.touchstart.moveX;
@@ -281,9 +313,15 @@ var loadItems = function(items){
 			})
 			.on('touchend', function(){
 				if(this.touchstart.dir == 'x'){
+					// var force = this.touchstart.force.filter(function(d){ return d> Date.now()-200;}).length
+					// console.log(this.touchstart.vel)
+					var force = this.touchstart.vel.splice(this.touchstart.vel.length-5,this.touchstart.vel.length)
+						.map(function(d,i,a){return d-a[0]})
+						.reduce(function(a,b){return a+b});
+					console.log(force/60);
 					var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
 					var n = Math.round(moveX/card_width*1.5);
-					d3.select('#'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeExpOut).styleTween('left', function(){
+					d3.select('#'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeQuadOut).styleTween('left', function(){
 						var l = d3.interpolate(this.left+moveX, this.left+(n*card_width));
 						this.left += n*card_width;
 					    return function(t) {
