@@ -115,13 +115,21 @@ var loadItems = function(items){
 			}
 		})
 		.on('touchend', function(section){
-			if(this.touchstart.dir == 'x'){
-				var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
+			var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
+			if(this.touchstart.dir == 'x' && moveX > 150){
 				d3.select('#activebox_'+section.id).selectAll('.card')
 				.style('left', function(){
+					this.left2 = moveX;
 					d3.selectAll('article.active').dispatch('click');
 					return this.left+'px';
 				});
+			}else{
+				d3.select('#activebox_'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeQuadOut).styleTween('left', function(){
+						var l = d3.interpolate(this.left+moveX, open_card_x);
+					    return function(t) {
+					        return l(t)+"px";
+					    };
+					});
 			}
 		});;
 
@@ -261,7 +269,8 @@ var loadItems = function(items){
 						    };
 						})
 						.styleTween("left", function(d,i) {
-							var tx = d3.interpolate(this.left, open_card_x);
+							var tx = d3.interpolate(this.left, open_card_x+(this.left2 || 0));
+							this.left2 = 0;
 						    return function(t) {
 						        return self.opening ? 
 						        	tx(t)+"px":
