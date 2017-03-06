@@ -74,7 +74,7 @@ var loadItems = function(items){
 			.attr('class', 'menu')
 			.on('click', function(d){ 
 				var Y = document.getElementById(d.id).getClientRects()[0].top+window.scrollY;
-				window.smoothScroll(Y-150, 800);
+				window.smoothScroll(Y-110, 800);
 				header.close();
 			})
 			// .attr('href', function(d){ return ''; /*d.href*/ })
@@ -116,7 +116,7 @@ var loadItems = function(items){
 		})
 		.on('touchend', function(section){
 			var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
-			if(this.touchstart.dir == 'x' && moveX*moveX > 150*150){
+			if(this.touchstart.dir == 'x' && moveX*moveX > 50*50){
 				d3.select('#activebox_'+section.id).selectAll('.card')
 				.style('left', function(){
 					this.left2 = moveX;
@@ -124,7 +124,7 @@ var loadItems = function(items){
 					return (open_card_x + moveX)+'px';
 				});
 			}
-			if(this.touchstart.dir == 'x' && moveX*moveX < 150*150){
+			if(this.touchstart.dir == 'x' && moveX*moveX < 50*50){
 				d3.select('#activebox_'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeQuadOut).styleTween('left', function(){
 					var l = d3.interpolate(this.left+moveX, open_card_x);
 				    return function(t) {
@@ -140,7 +140,7 @@ var loadItems = function(items){
 		.data(items.sections)
 		.enter().append("section")
 		.attr('id', function(section){ return section.id; })
-		.html(function(section){ return "<img class='title_img' style='position: absolute; top: -100px;' src='img/Title_"+section.title+".png'>"});
+		.html(function(section){ return "<img class='title_img' style='position: absolute; top: -70px;' src='img/Title_"+section.title+".png'>"});
 // <div id='activebox_"+section.id+"' class='activebox'></div>
 	//Cards
 	sections.each(function(section){
