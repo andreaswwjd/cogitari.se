@@ -14,23 +14,21 @@ var getJSON = function(url, callback) {
     xhr.send();
 };
 
-var active = false;
+var is_touch_device = (function() {
+  return 'ontouchstart' in window        // works on most browsers 
+      || navigator.maxTouchPoints;       // works on IE10/11 and Surface
+})();
+if(is_touch_device){ console.log('Is touch device. Scroll paralax effect turned off.') }
+
 var screen_width = screen.availWidth;
 var screen_height = screen.availHeight;
-// document.body.style.width = screen_width+'px';
-// document.getElementsByTagName('header')[0].style.width = screen_width+'px';
 var site_width = document.body.clientWidth;
 var site_height = document.body.clientHeight;
 var changePerspective = function(event){
-	if(active){
-		// event.bubbles = false;
-		event.preventDefault();
-		event.stopPropagation();
-		// d3.select('.active').style('margin-top', window.scrollY+'px')
+	if(!is_touch_device){
+		var window_mid = window.scrollY+screen.availHeight/2;
+		d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
 	}
-	var window_mid = window.scrollY+screen.availHeight/2;
-	d3.select('#content').style('perspective-origin', '0px '+window_mid+'px').style('perspective', '2000px');
-
 }
 
 //Menu
@@ -125,7 +123,6 @@ var loadItems = function(items){
 				this.active = true;
 				console.log('activebox_'+article.type+'_section');
 				document.getElementById('activebox_'+article.type+'_section').appendChild(this);
-				active = true;
 			})
 			.on('deactivate', function(article){
 				this.active = false;
@@ -221,7 +218,7 @@ var loadItems = function(items){
 					.transition().duration(flip_time)
 					.styleTween("transform", function() {
 						var tf_ry = d3.interpolate(0, 180);
-						var tf_tz = d3.interpolate(0, 100);
+						var tf_tz = d3.interpolate(0, 30);
 						// var tf_sc = d3.interpolate(1, 1.2);
 					    return function(t) {
 					    	var rt = t>0.5 ? t-1 : t;
