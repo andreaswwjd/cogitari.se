@@ -111,17 +111,17 @@ var loadItems = function(items){
 			if(!this.touchstart.dir && moveY*moveY > 25){ this.touchstart.dir = 'y'; }
 			if(this.touchstart.dir == 'x'){
 				d3.event.preventDefault();
-				d3.select('#activebox_'+section.id).selectAll('.card').style('left', function(){ return (open_card_x + moveX )+'px'});
+				d3.select('#activebox_'+section.id).selectAll('.card').style('left', function(){ return (open_card_x + moveX)+'px'});
 			}
 		})
 		.on('touchend', function(section){
 			var moveX = d3.event.changedTouches[0].clientX - this.touchstart.x;
-			if(this.touchstart.dir == 'x' && moveX > 150){
+			if(this.touchstart.dir == 'x' && moveX*moveX > 150*150){
 				d3.select('#activebox_'+section.id).selectAll('.card')
 				.style('left', function(){
 					this.left2 = moveX;
 					d3.selectAll('article.active').dispatch('click');
-					return this.left+'px';
+					return (open_card_x + moveX)+'px';
 				});
 			}else{
 				d3.select('#activebox_'+section.id).selectAll('.card').transition().duration(300).ease(d3.easeQuadOut).styleTween('left', function(){
