@@ -57,8 +57,8 @@ var openSection = function(id){
 }
 
 
-// var card_width = 244;
-var card_width = 104;
+var card_width = 244;
+// var card_width = 104;
 var open_card_x = 0.05*site_width;
 var flip_time = 600;
 var selection = undefined;
